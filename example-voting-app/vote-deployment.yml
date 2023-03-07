@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: vote
+  labels:
+    app: vote
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vote
+  template:
+    metadata:
+      labels:
+        app: vote
+    spec:
+      containers:
+        - name: vote
+          image: dockersamples/examplevotingapp_vote
+          env:
+            - name: REDIS
+              value: redis
+            - name: POSTGRES_HOST
+              value: db
+            - name: POSTGRES_DB
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres_password
+          ports:
+            - containerPort: 80
+              name: vote
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+            requests:
+              memory: "64Mi"
+              cpu: "0.1"
+          

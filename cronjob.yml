@@ -1,0 +1,40 @@
+---
+apiVersion: batch/v1 
+kind: CronJob
+metadata:
+  name: cronjob-test
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec: 
+      template:
+        spec: 
+          containers:
+            - name: cronjob-test
+              image: busybox:1.28
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - date; echo "Hello world! from kubernetes"
+          restartPolicy: OnFailure
+
+# ---
+# apiVersion: batch/v1 
+# kind: Cronjob
+# metadata:
+#   name: cronjob-test
+# spec:
+#   schedule: "*/1 * * * *"
+#   jobTemplate:
+#     spec: 
+#       template:
+#         spec: 
+#           containers:
+#             - name: cronjob-test
+#               image: busybox:1.28
+#               imagePullPolicy: IfNotPresent
+#               command: ["sh", "c", "echo", "Hello", "World"]
+#           restartPolicy: OnFailure
+
+
